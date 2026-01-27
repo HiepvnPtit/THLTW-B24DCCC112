@@ -1,10 +1,16 @@
+import { SigninRedirectArgs } from 'oidc-client-ts';
 import { useCallback, useState } from 'react';
-
+export interface product {
+    id: number;
+    name : string;
+    price:number ;
+    quantity : number;
+}
 
 
 
 export default () => {
-    const [danhSachSanPham, setDanhSachSanPham] = useState([
+    const [danhSachSanPham, setDanhSachSanPham] = useState<product[]>([
 
         { id: 1, name: 'Laptop Dell XPS 13', price: 25000000, quantity: 10 },
 
@@ -14,7 +20,7 @@ export default () => {
         { id: 4, name: 'iPad Air M2', price: 18000000, quantity: 12 },
 
         { id: 5, name: 'MacBook Air M3', price: 28000000, quantity: 8 }]);
-    const addSanPham = useCallback((item: any) => {
+    const addSanPham = useCallback((item: product) => {
         setDanhSachSanPham((prev) => [...prev, item]);
     }, []);
 

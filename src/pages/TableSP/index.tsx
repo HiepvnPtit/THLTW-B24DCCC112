@@ -7,44 +7,46 @@ import Search from 'antd/lib/transfer/search';
 import title from '@/locales/vi-VN/global/title';
 import { render } from 'react-dom';
 import { values } from 'lodash';
+import type { product } from '@/models/danhsachsanpham';
 // import message from '@/locales/vi-VN/global/message';
 
 
 
 const TableSP = () => {
-	const { danhSachSanPham, setDanhSachSanPham } = useModel('danhsachsanpham');
+	const { danhSachSanPham, setDanhSachSanPham ,addSanPham} = useModel('danhsachsanpham');
 	const [isVisible, setIsVisible] = useState(false);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
 
 	const [visible, setVisible] = useState<boolean>(false);
 	const [isEdit, setIsEdit] = useState<boolean>(false);
-	const [row, setRow] = useState<any>(null);
-	const [form] = Form.useForm();
+	const [row, setRow] = useState<product | null>(null);
+	const [form] = Form.useForm<product>();
+	const [idCounter, setIdCounter] = useState<number>(danhSachSanPham.length + 1);
 	const columns = [
 		{ title: ' ID', dataIndex: 'id', key: 'id', align: 'center', },
 		{
 			title: 'Tên Sản Phẩm',
 			dataIndex: 'name',
 			key: 'name',
-			align: 'center',
+			align: 'center' as const,
 		},
 		{
 			title: 'Giá',
 			dataIndex: 'price',
 			key: 'price',
-			align: 'center',
+			align: 'center' as const,
 		},
 		{
 			title: 'Số Lượng',
 			dataIndex: 'quantity',
 			key: 'quantity',
-			align: 'center',
+			align: 'center' as const,
 		},
 		{
 			title: 'Hành Động',
 			key: 'action',
-			align: 'center',
-			render: (_: any, record: any) => (
+			align: 'center' as const,
+			render: (_: any, record: product) => (
 				<Space size="middle">
 					<Button
 						onClick={() => {
@@ -59,7 +61,7 @@ const TableSP = () => {
 					<Popconfirm
 						title="Bạn có chắc chắn muốn xóa sản phẩm này?"
 						onConfirm={() => {
-							const filteredData = danhSachSanPham.filter((item: any) => item.id !== record.id);
+							const filteredData = danhSachSanPham.filter((item: product) => item.id !== record.id);
 							setDanhSachSanPham(filteredData);
 							message.success('Xóa sản phẩm thành công');
 						}}
@@ -73,7 +75,7 @@ const TableSP = () => {
 		},
 	];
 
-	const dataHienThi = danhSachSanPham.filter((item: any) =>
+	const dataHienThi = danhSachSanPham.filter((item: product) =>
 		item.name.toLowerCase().includes(searchKeyword.toLowerCase())
 	);
 
@@ -104,24 +106,28 @@ const TableSP = () => {
 				onCancel={() => setVisible(false)}
 			>
 				<Form
-					initialValues={isEdit ? row : {}}
+					form={form}
+					layout="vertical"
 					onFinish={(values) => {
-						if (isEdit) {
-							const updatedList = danhSachSanPham.map((item: any) =>
+						if (isEdit && row) {
+							const updatedData = danhSachSanPham.map((item: product) =>
 								item.id === row.id ? { ...item, ...values } : item
 							);
-							setDanhSachSanPham(updatedList);
+							setDanhSachSanPham(updatedData);
 							message.success('Cập nhật sản phẩm thành công');
-						}
-						else {
-							const newProduct = {
-								id: danhSachSanPham.length + 1,
-								...values,
+						} else {
+							const newProduct: product = {
+								id: idCounter,
+								name: values.name,
+								price: values.price,
+								quantity: values.quantity,
 							};
-							setDanhSachSanPham([...danhSachSanPham, newProduct]);
+							addSanPham(newProduct);
+							setIdCounter(idCounter + 1);
 							message.success('Thêm sản phẩm thành công');
 						}
 						setVisible(false);
+						form.resetFields();
 					}}
 				>
 					<Form.Item
@@ -134,16 +140,21 @@ const TableSP = () => {
 					<Form.Item
 						name="price"
 						label="Giá"
-						rules={[{ required: true, message: 'Vui lòng nhập giá sản phẩm' }]}
+						rules={[{ required: true, message: 'Vui lòng nhập giá sản phẩm' },
+						{ required: true, type: 'integer', min: 0, message: 'Giá phải là số không âm'	}
+						]}
 					>
-						<InputNumber style={{ width: '100%' }} />
+						<Input />
+
 					</Form.Item>
 					<Form.Item
 						name="quantity"
 						label="Số Lượng"
-						rules={[{ required: true, message: 'Vui lòng nhập số lượng sản phẩm' }]}
+						rules={[{ required: true, message: 'Vui lòng nhập số lượng sản phẩm' },
+						{ required: true, type: 'integer', min: 0, message: 'Số lượng phải là số không âm'	}
+						]}
 					>
-						<InputNumber style={{ width: '100%' }} />
+						<InputNumber style={{ width: '100%' }} min={0} precision={0} />
 					</Form.Item>
 					<Form.Item>
 						<Button type="primary" htmlType="submit">
