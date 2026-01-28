@@ -44,9 +44,15 @@
 	},
 	{
 		path: '/TableSP',
-		name: 'TableSP',
+		name: 'Quản lý Sản phẩm',
 		icon: 'OrderedListOutlined',
 		component: './TableSP',
+	},
+	{
+		path: '/TableDH',
+		name: 'Quản lý Đơn hàng',
+		icon: 'OrderedListOutlined',
+		component: './TableDH',
 	},
 
 	// DANH MUC HE THONG
