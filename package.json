@@ -124,6 +124,7 @@
     "@umijs/preset-react": "^1.7.4",
     "@umijs/yorkie": "^2.0.3",
     "cross-env": "^7.0.0",
+    "dependency-cruiser": "^17.3.10",
     "enzyme": "^3.11.0",
     "eslint": "^7.1.0",
     "express": "^4.17.1",
