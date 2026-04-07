@@ -1,0 +1,75 @@
+# Project Context
+
+This repository is a Umi 3 + React 17 + Ant Design Pro v5 TypeScript app.
+
+- Node version: 16.x
+- Package manager: npm or yarn (prefer current repo lockfile behavior)
+- Path alias: @/* -> src/*
+- Main runtime environment: UMI_ENV=dev, REACT_APP_ENV varies by script
+
+## Main Commands
+
+- Development: npm run start:dev
+- Build: npm run build
+- Type check: npm run tsc
+- Lint all: npm run lint
+- Unit tests: npm run test
+
+## High-Level Structure
+
+- config/: Umi config, routes, env-specific setup
+- src/pages/: page-level features (route targets)
+- src/models/: Umi models for state and effects
+- src/services/: API layer grouped by domain
+- src/components/: reusable UI components
+- src/hooks/: reusable behavior hooks
+- src/utils/: shared utilities (axios, rules, socket, helpers)
+- src/locales/: i18n strings
+- mock/: local mock endpoints
+
+## How To Understand A Feature
+
+When changing a feature, inspect in this order:
+
+1. Route entry in config/routes.ts
+2. Page component in src/pages/**
+3. Related model in src/models/**
+4. Related service in src/services/**
+5. Shared component/hook dependencies
+
+Trace full flow as: Route -> Page -> Model -> Service -> API response mapping.
+
+## Code Conventions For This Repo
+
+- Use TypeScript for all new app logic.
+- Keep strings in TS/TSX single-quoted to match lint rules.
+- Prefer immutable updates (never mutate state objects/arrays in place).
+- Keep functions focused and avoid deep nesting.
+- Handle async errors explicitly and surface user-friendly feedback.
+- Avoid hardcoded secrets, tokens, or environment-specific constants.
+
+## Existing Project-Specific Gotchas
+
+- In Ant Design forms with DatePicker, values often need moment objects.
+- Newly added model namespaces may require temporary cast:
+  useModel('new.namespace' as any) as any
+  until generated model typings are refreshed.
+
+## Implementation Rules For AI
+
+- Reuse existing patterns in nearby files before introducing new abstractions.
+- Prefer minimal, targeted diffs over broad refactors.
+- Do not change unrelated files.
+- Keep naming consistent with existing Vietnamese/English domain naming.
+- For new API calls, place them in the correct domain folder under src/services/.
+- For new state logic, place it in the matching domain model under src/models/.
+
+## Validation Before Finishing
+
+After edits, run the most relevant checks:
+
+1. npm run tsc
+2. npm run lint (or scoped lint if change is small)
+3. npm run test (when behavior changes)
+
+If a check cannot be run, explain why and what remains to verify.

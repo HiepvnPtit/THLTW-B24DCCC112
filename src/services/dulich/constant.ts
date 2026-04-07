@@ -1,0 +1,105 @@
+import type { Destination, TravelPlan } from './typing';
+
+export const TRAVEL_STORAGE_KEYS = {
+	destinations: 'travel.destinations',
+	itineraryStops: 'travel.itineraryStops',
+	travelPlans: 'travel.travelPlans',
+	draftName: 'travel.draftName',
+	draftActualCosts: 'travel.draftActualCosts',
+};
+
+export const DEFAULT_DESTINATIONS: Destination[] = [
+	{
+		id: 1,
+		name: 'Phú Quốc',
+		type: 'bien',
+		location: 'Kiên Giang',
+		description: 'Thiên đường biển đảo với bãi cát trắng và hải sản tươi.',
+		imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+		rating: 4.8,
+		visitTime: 3,
+		avgCosts: { food: 450000, stay: 1200000, transport: 600000 },
+	},
+	{
+		id: 2,
+		name: 'Đà Lạt',
+		type: 'nui',
+		location: 'Lâm Đồng',
+		description: 'Khí hậu mát mẻ, phù hợp nghỉ dưỡng và khám phá thiên nhiên.',
+		imageUrl: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1200&q=80',
+		rating: 4.9,
+		visitTime: 4,
+		avgCosts: { food: 350000, stay: 900000, transport: 500000 },
+	},
+	{
+		id: 3,
+		name: 'Đà Nẵng',
+		type: 'thanh-pho',
+		location: 'Đà Nẵng',
+		description: 'Thành phố năng động với biển đẹp, ẩm thực đa dạng và dịch vụ tốt.',
+		imageUrl: 'https://images.unsplash.com/photo-1506973035872-a4f23ffb6db1?auto=format&fit=crop&w=1200&q=80',
+		rating: 4.7,
+		visitTime: 3,
+		avgCosts: { food: 500000, stay: 1100000, transport: 650000 },
+	},
+	{
+		id: 4,
+		name: 'Sapa',
+		type: 'nui',
+		location: 'Lào Cai',
+		description: 'Điểm đến vùng cao nổi bật với ruộng bậc thang và bản làng.',
+		imageUrl: 'https://images.unsplash.com/photo-1527838832700-5059252407fa?auto=format&fit=crop&w=1200&q=80',
+		rating: 4.6,
+		visitTime: 3,
+		avgCosts: { food: 320000, stay: 850000, transport: 700000 },
+	},
+	{
+		id: 5,
+		name: 'Hội An',
+		type: 'van-hoa',
+		location: 'Quảng Nam',
+		description: 'Phố cổ yên bình, giàu bản sắc và thích hợp trải nghiệm văn hóa.',
+		imageUrl: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=1200&q=80',
+		rating: 4.9,
+		visitTime: 2,
+		avgCosts: { food: 420000, stay: 800000, transport: 550000 },
+	},
+	{
+		id: 6,
+		name: 'Nha Trang',
+		type: 'bien',
+		location: 'Khánh Hòa',
+		description: 'Biển xanh, vui chơi giải trí và các hoạt động nghỉ dưỡng.',
+		imageUrl: 'https://images.unsplash.com/photo-1524231757912-21f4fe3e8f88?auto=format&fit=crop&w=1200&q=80',
+		rating: 4.5,
+		visitTime: 3,
+		avgCosts: { food: 380000, stay: 1000000, transport: 550000 },
+	},
+];
+
+export const DEFAULT_TRAVEL_PLANS: TravelPlan[] = [
+	{
+		id: 1,
+		name: 'Hành trình biển miền Trung',
+		createdAt: '2026-01-15T08:00:00.000Z',
+		expectedCosts: { food: 1400000, stay: 2600000, transport: 1300000 },
+		actualCosts: { food: 1500000, stay: 2500000, transport: 1400000 },
+		totalTravelMinutes: 210,
+		stops: [
+			{ id: 1, destinationId: 3, day: 1, order: 1, transitMinutes: 0 },
+			{ id: 2, destinationId: 5, day: 2, order: 1, transitMinutes: 75 },
+		],
+	},
+	{
+		id: 2,
+		name: 'Nghỉ dưỡng cao nguyên',
+		createdAt: '2026-02-12T10:30:00.000Z',
+		expectedCosts: { food: 750000, stay: 1800000, transport: 1100000 },
+		actualCosts: { food: 800000, stay: 1900000, transport: 1000000 },
+		totalTravelMinutes: 180,
+		stops: [
+			{ id: 3, destinationId: 2, day: 1, order: 1, transitMinutes: 0 },
+			{ id: 4, destinationId: 4, day: 2, order: 1, transitMinutes: 90 },
+		],
+	},
+];

@@ -156,6 +156,34 @@ export default [
 		component: './ThongKe',
 	},
 	{
+		path: '/du-lich',
+		name: 'Du lịch',
+		icon: 'CompassOutlined',
+		routes: [
+			{ path: '/du-lich', redirect: '/du-lich/kham-pha' },
+			{
+				path: '/du-lich/kham-pha',
+				name: 'Khám phá điểm đến',
+				component: './DuLich/KhamPha',
+			},
+			{
+				path: '/du-lich/tao-lich-trinh',
+				name: 'Tạo lịch trình',
+				component: './DuLich/TaoLichTrinh',
+			},
+			{
+				path: '/du-lich/quan-ly-dia-diem',
+				name: 'Quản lý điểm đến',
+				component: './DuLich/QuanLyDiaDiem',
+			},
+			{
+				path: '/du-lich/bao-cao',
+				name: 'Báo cáo du lịch',
+				component: './DuLich/BaoCao',
+			},
+		],
+	},
+	{
 		path: '/cau-lac-bo',
 		name: 'Quản lý Câu lạc bộ',
 		icon: 'TeamOutlined',

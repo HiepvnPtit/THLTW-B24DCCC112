@@ -1,29 +1,28 @@
 @import '~antd/es/style/themes/default.less';
 @import '../../../styles/_variable.less';
 
-.home-welcome {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	text-align: center;
+.home-travel-hero {
+	position: relative;
+	padding: 8px 0 16px;
 
-	h1 {
-		font-weight: 300;
-		font-size: 38px;
-
-		@media (max-width: @screen-xs) {
-			font-size: 26px;
-		}
+	.hero-card {
+		background:
+			linear-gradient(135deg, rgba(22, 119, 255, 0.08), rgba(19, 194, 194, 0.08)),
+			#fff;
+		border: 1px solid rgba(22, 119, 255, 0.08);
+		box-shadow: 0 12px 36px rgba(24, 144, 255, 0.08);
 	}
 
-	h2 {
-		font-weight: 700;
-		font-size: 20px;
+	.ant-card {
+		border-radius: 18px;
+	}
 
-		@media (max-width: @screen-xs) {
-			font-size: 18px;
-		}
+	.ant-typography {
+		max-width: 100%;
+	}
+
+	@media (max-width: @screen-xs) {
+		padding-top: 0;
 	}
 }
+
