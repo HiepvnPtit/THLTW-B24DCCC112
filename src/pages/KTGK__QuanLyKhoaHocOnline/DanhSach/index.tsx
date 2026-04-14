@@ -1,9 +1,11 @@
 import useKTGK__KhoaHocModel from '@/hooks/useKTGK__KhoaHocModel';
-import { DANH_SACH_GIANG_VIEN, ETrangThaiKhoaHoc, TRANG_THAI_KHOA_HOC_COLOR, TRANG_THAI_KHOA_HOC_LABEL } from '@/services/KTGK__QuanLyKhoaHocOnline/constant';
+import { DANH_SACH_GIANG_VIEN, TRANG_THAI_KHOA_HOC_COLOR, TRANG_THAI_KHOA_HOC_LABEL } from '@/services/KTGK__QuanLyKhoaHocOnline/constant';
 import type { IKhoaHoc } from '@/services/KTGK__QuanLyKhoaHocOnline/typing';
+import type { ETrangThaiKhoaHoc } from '@/services/KTGK__QuanLyKhoaHocOnline/constant';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Card, Popconfirm, Space, Table, Tag } from 'antd';
+import { Button, Card, Input, Popconfirm, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { useMemo, useState } from 'react';
 import FormKTGK__KhoaHoc from './components/Form';
 
 const KTGK__DanhSachKhoaHoc = () => {
@@ -11,7 +13,7 @@ const KTGK__DanhSachKhoaHoc = () => {
 		danhSach,
 		limit,
 		setRecord,
-		record,
+		record: selectedRecord,
 		getModel,
 		deleteModel,
 		setVisibleForm,
@@ -23,6 +25,13 @@ const KTGK__DanhSachKhoaHoc = () => {
 		putModel,
 		formSubmiting,
 	} = useKTGK__KhoaHocModel();
+	const [searchKeyword, setSearchKeyword] = useState<string>('');
+
+	const filteredDanhSach = useMemo(() => {
+		const keyword = searchKeyword.trim().toLowerCase();
+		if (!keyword) return danhSach;
+		return danhSach.filter((item) => item.ten?.toLowerCase().includes(keyword));
+	}, [danhSach, searchKeyword]);
 
 	const columns: ColumnsType<IKhoaHoc.IRecord> = [
 		{
@@ -45,7 +54,7 @@ const KTGK__DanhSachKhoaHoc = () => {
 				text: gv.ten,
 				value: gv.ten,
 			})),
-			onFilter: (value, record) => record.tenGiangVien === value,
+			onFilter: (value, row) => row.tenGiangVien === value,
 		},
 		{
 			title: 'Số lượng học viên',
@@ -63,7 +72,7 @@ const KTGK__DanhSachKhoaHoc = () => {
 				text: label,
 				value: key,
 			})),
-			onFilter: (value, record) => record.trangThai === value,
+			onFilter: (value, row) => row.trangThai === value,
 			render: (val: ETrangThaiKhoaHoc) => (
 				<Tag color={TRANG_THAI_KHOA_HOC_COLOR[val]}>{TRANG_THAI_KHOA_HOC_LABEL[val]}</Tag>
 			),
@@ -73,22 +82,22 @@ const KTGK__DanhSachKhoaHoc = () => {
 			align: 'center',
 			width: 100,
 			fixed: 'right',
-			render: (_, record: IKhoaHoc.IRecord) => (
+			render: (_, row: IKhoaHoc.IRecord) => (
 				<Space>
 					<Button
 						type='link'
 						icon={<EditOutlined />}
 						onClick={() => {
-							setRecord(record);
+							setRecord(row);
 							setEdit(true);
 							setVisibleForm(true);
 						}}
 						title='Chỉnh sửa'
 					/>
-					{record.soHocVien === 0 ? (
+					{row.soHocVien === 0 ? (
 						<Popconfirm
 							onConfirm={() => {
-								deleteModel(record._id, getModel);
+								deleteModel(row._id, getModel);
 							}}
 							title='Bạn có chắc chắn muốn xóa khóa học này?'
 							okText='Xóa'
@@ -108,7 +117,7 @@ const KTGK__DanhSachKhoaHoc = () => {
 							danger
 							icon={<DeleteOutlined />}
 							disabled
-							title={`Không thể xóa (có ${record.soHocVien} học viên)`}
+							title={`Không thể xóa (có ${row.soHocVien} học viên)`}
 						/>
 					)}
 				</Space>
@@ -119,6 +128,12 @@ const KTGK__DanhSachKhoaHoc = () => {
 	return (
 		<Card title='Quản lý Khóa học Online' bordered>
 			<Space wrap style={{ marginBottom: 12 }}>
+				<Input.Search
+					allowClear
+					placeholder='Tìm kiếm theo tên khóa học'
+					style={{ width: 320 }}
+					onChange={(e) => setSearchKeyword(e.target.value)}
+				/>
 				<Button
 					onClick={() => {
 						setRecord({} as IKhoaHoc.IRecord);
@@ -134,7 +149,7 @@ const KTGK__DanhSachKhoaHoc = () => {
 
 			{visibleForm && (
 				<FormKTGK__KhoaHoc
-					record={record}
+					record={selectedRecord}
 					setVisibleForm={setVisibleForm}
 					edit={edit}
 					postModel={postModel}
@@ -147,9 +162,9 @@ const KTGK__DanhSachKhoaHoc = () => {
 
 			<Table
 				columns={columns}
-				dataSource={danhSach}
+				dataSource={filteredDanhSach}
 				loading={loading}
-				pagination={{ pageSize: limit, total: danhSach?.length || 0, current: 1 }}
+				pagination={{ pageSize: limit, total: filteredDanhSach?.length || 0, current: 1 }}
 				rowKey='_id'
 				scroll={{ x: 1200 }}
 			/>
