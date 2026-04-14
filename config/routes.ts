@@ -211,6 +211,12 @@ export default [
 			},
 		],
 	},
+	{
+		path: '/KTGK--quanlykhohockonline',
+		name: 'Quản lý Khóa học Online',
+		icon: 'GatewayOutlined',
+		component: './KTGK__QuanLyKhoaHocOnline',
+	},
 
 
 	{
