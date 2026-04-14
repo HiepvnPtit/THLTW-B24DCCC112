@@ -1,6 +1,21 @@
 import { STORAGE_KEY, STORAGE_KEY_HOC_VIEN } from './constant';
 import type { IKhoaHoc } from './typing';
 
+const normalizeCourseName = (name?: string) => (name || '').trim().toLowerCase();
+
+const ensureUniqueCourseName = (list: IKhoaHoc.IRecord[], courseName?: string, excludeId?: string) => {
+	const normalizedName = normalizeCourseName(courseName);
+	if (!normalizedName) return;
+
+	const isDuplicate = list.some(
+		(item) => normalizeCourseName(item.ten) === normalizedName && (!excludeId || item._id !== excludeId),
+	);
+
+	if (isDuplicate) {
+		throw new Error('Tên khóa học đã tồn tại');
+	}
+};
+
 
 export const getKhoaHocList = async (): Promise<IKhoaHoc.IRecord[]> => {
 	const data = localStorage.getItem(STORAGE_KEY);
@@ -9,8 +24,11 @@ export const getKhoaHocList = async (): Promise<IKhoaHoc.IRecord[]> => {
 
 export const createKhoaHoc = async (payload: Omit<IKhoaHoc.IRecord, '_id' | 'createdAt'>): Promise<IKhoaHoc.IRecord> => {
 	const list = await getKhoaHocList();
+	ensureUniqueCourseName(list, payload.ten);
+
 	const newRecord: IKhoaHoc.IRecord = {
 		...payload,
+		ten: payload.ten?.trim(),
 		_id: `kh_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
 		createdAt: new Date().toISOString(),
 		danhSachHocVien: payload.danhSachHocVien || [],
@@ -25,9 +43,14 @@ export const updateKhoaHoc = async (id: string, payload: Partial<IKhoaHoc.IRecor
 	const index = list.findIndex((item) => item._id === id);
 	if (index === -1) throw new Error('Không tìm thấy khóa học');
 
+	if (payload.ten !== undefined) {
+		ensureUniqueCourseName(list, payload.ten, id);
+	}
+
 	list[index] = {
 		...list[index],
 		...payload,
+		ten: payload.ten !== undefined ? payload.ten.trim() : list[index].ten,
 		_id: id,
 		updatedAt: new Date().toISOString(),
 	};

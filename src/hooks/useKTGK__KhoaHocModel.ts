@@ -35,12 +35,13 @@ const useKTGK__KhoaHocModel = () => {
 	const postModel = async (payload: Omit<IKhoaHoc.IRecord, '_id' | 'createdAt'>, callback?: () => void) => {
 		setFormSubmiting(true);
 		try {
-			const newRecord = await createKhoaHoc(payload);
+			await createKhoaHoc(payload);
 			message.success('Thêm khóa học thành công');
 			await getModel();
 			callback?.();
 		} catch (error) {
-			message.error('Lỗi thêm khóa học');
+			const errorMessage = error instanceof Error ? error.message : 'Lỗi thêm khóa học';
+			message.error(errorMessage);
 			console.error(error);
 		} finally {
 			setFormSubmiting(false);
@@ -56,7 +57,8 @@ const useKTGK__KhoaHocModel = () => {
 			await getModel();
 			callback?.();
 		} catch (error) {
-			message.error('Lỗi cập nhật khóa học');
+			const errorMessage = error instanceof Error ? error.message : 'Lỗi cập nhật khóa học';
+			message.error(errorMessage);
 			console.error(error);
 		} finally {
 			setFormSubmiting(false);
