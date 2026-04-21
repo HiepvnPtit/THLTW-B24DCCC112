@@ -1,6 +1,4 @@
-﻿import path from "path";
-
-export default [
+﻿export default [
 	{
 		path: '/user',
 		layout: false,
@@ -216,6 +214,39 @@ export default [
 		name: 'Quản lý Khóa học Online',
 		icon: 'GatewayOutlined',
 		component: './KTGK__QuanLyKhoaHocOnline',
+	},
+	{
+		path: '/blog-app',
+		name: 'BlogApp',
+		icon: 'ReadOutlined',
+		routes: [
+			{ path: '/blog-app', redirect: '/blog-app/trang-chu' },
+			{
+				path: '/blog-app/trang-chu',
+				name: 'Trang chu',
+				component: './BlogApp/TrangChu',
+			},
+			{
+				path: '/blog-app/gioi-thieu',
+				name: 'Gioi thieu',
+				component: './BlogApp/GioiThieu',
+			},
+			{
+				path: '/blog-app/quan-ly-bai-viet',
+				name: 'Quan ly bai viet',
+				component: './BlogApp/QuanLyBaiViet',
+			},
+			{
+				path: '/blog-app/quan-ly-the',
+				name: 'Quan ly the',
+				component: './BlogApp/QuanLyThe',
+			},
+			{
+				path: '/blog-app/bai-viet/:slug',
+				component: './BlogApp/ChiTiet',
+				hideInMenu: true,
+			},
+		],
 	},
 
 
