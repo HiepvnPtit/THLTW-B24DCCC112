@@ -210,6 +210,39 @@
 		],
 	},
 	{
+		path: '/QuanLyTheDuc',
+		name: 'Thể dục & Sức khỏe',
+		icon: 'HeartOutlined',
+		routes: [
+			{ path: '/QuanLyTheDuc', redirect: '/QuanLyTheDuc/Dashboard' },
+			{
+				path: '/QuanLyTheDuc/Dashboard',
+				name: 'Dashboard Thể dục',
+				component: './QuanLyTheDuc/Dashboard',
+			},
+			{
+				path: '/QuanLyTheDuc/NhatKyTapLuyen',
+				name: 'Nhật ký tập luyện',
+				component: './QuanLyTheDuc/NhatKyTapLuyen',
+			},
+			{
+				path: '/QuanLyTheDuc/NhatKyChiSo',
+				name: 'Nhật ký chỉ số',
+				component: './QuanLyTheDuc/NhatKyChiSo',
+			},
+			{
+				path: '/QuanLyTheDuc/QuanLyMucTieu',
+				name: 'Quản lý mục tiêu',
+				component: './QuanLyTheDuc/QuanLyMucTieu',
+			},
+			{
+				path: '/QuanLyTheDuc/ThuVienBaiTap',
+				name: 'Thư viện bài tập',
+				component: './QuanLyTheDuc/ThuVienBaiTap',
+			},
+		],
+	},
+	{
 		path: '/KTGK--quanlykhohockonline',
 		name: 'Quản lý Khóa học Online',
 		icon: 'GatewayOutlined',
